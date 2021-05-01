@@ -25,14 +25,16 @@ class SchedulerService {
 			if($auctionend_at < $nowtime){
 				$this->itemRepo
 					->itemSetSold(['item_id' => $ii->id]);
+				echo "Change item id: ".$ii->id." status to Sold.";
+
 
 				if($ii->endbid_by != null){
 					$this->userRepo
 						->transferFunds($ii->endbid_by, $ii->created_by, $ii->endbidamount);
 
-					echo "Change item id: ".$ii->id." status to Sold.\n";
+					echo " Move from ".$ii->endbid_by." to ".$ii->created_by." => ".$ii->endbidamount.".\n";
 				}else{
-					echo "Cannot move Funds";
+					echo " Cannot move Funds.\n";
 				}
 			}
 		}
