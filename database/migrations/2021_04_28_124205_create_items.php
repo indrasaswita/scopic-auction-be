@@ -32,7 +32,7 @@ class CreateItems extends Migration
 				startbidamount INT UNSIGNED NOT NULL COMMENT 'no decimal needed',
 				endbidamount INT UNSIGNED NULL COMMENT 'no decimal needed',
 				endbid_by INT UNSIGNED NULL,
-				status ENUM('Draft', 'Draft', 'Sold') NOT NULL DEFAULT 'Draft',
+				status ENUM('Draft', 'Active', 'Sold') NOT NULL DEFAULT 'Draft',
 				created_by INT UNSIGNED NOT NULL,
 				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
 				updated_at TIMESTAMP NULL
@@ -307,9 +307,11 @@ class CreateItems extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('users');
-		Schema::dropIfExists('itemusers');
-		Schema::dropIfExists('items');
-		Schema::dropIfExists('itemcategories');
+		DB::unprepared("
+			DROP TABLE IF EXISTS users;
+			DROP TABLE IF EXISTS itemusers;
+			DROP TABLE IF EXISTS items;
+			DROP TABLE IF EXISTS itemcategories;
+		");
 	}
 }
