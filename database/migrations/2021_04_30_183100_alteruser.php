@@ -15,7 +15,7 @@ class Alteruser extends Migration
 	{
 		DB::unprepared("
 			ALTER TABLE users
-			ADD COLUMN fund INT UNSIGNED NOT NULL DEFAULT 0 AFTER gender;
+			ADD COLUMN fund INT UNSIGNED NOT NULL DEFAULT 1000 AFTER gender;
 		");
 	}
 
