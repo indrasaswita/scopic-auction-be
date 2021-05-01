@@ -142,7 +142,7 @@ class ItemService {
 	public function openItem(Request $request){
 		$auctionend_at = Carbon::parse($request->auctionend_at);
 		$data = [
-			'auctionend_at' => $auctionend_at->format('Y-m-d H:m'),
+			'auctionend_at' => $auctionend_at->format('Y-m-d H:i:s'),
 			'item_id' => $request->item_id,
 		];
 
