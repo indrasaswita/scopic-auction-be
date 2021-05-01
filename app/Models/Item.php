@@ -9,7 +9,7 @@ class Item extends Model
 {
 	use HasFactory;
 
-	protected $fillable = ['itemcategory_id', 'name', 'description', 'imageurl', 'startbidamount', 'endbidamount', 'endbid_by', 'status', 'created_by', 'created_at', 'updated_at'];
+	protected $fillable = ['itemcategory_id', 'name', 'description', 'imageurl', 'auctionend_at', 'startbidamount', 'endbidamount', 'endbid_by', 'status', 'created_by', 'created_at', 'updated_at'];
 	protected $guarded = ['id'];
 	protected $dates = ['created_at', 'updated_at'];
 
@@ -20,6 +20,10 @@ class Item extends Model
 	public function itemusers(){
 		return $this->hasMany(Itemuser::class)
 			->with('user');
+	}
+
+	public function creator(){
+		return $this->belongsTo(User::class, 'created_by');
 	}
 
 }

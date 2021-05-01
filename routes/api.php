@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TimeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,6 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::get('item/posted', [ItemController::class, 'getItemPostedWhenLogin']);
 	Route::get('item/detail', [ItemController::class, 'getItemDetail']);
 	Route::post('item/bid', [ItemController::class, 'bidItem']);
+	Route::post('item/open', [ItemController::class, 'openItem']);
+	Route::get('servertime', [TimeController::class, 'getCurrentTime']);
 });

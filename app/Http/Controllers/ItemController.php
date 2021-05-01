@@ -90,4 +90,18 @@ class ItemController extends Controller
 			->bidItem($request);
 	}
 
+	public function openItem(Request $request) {
+		$rules = [
+			'item_id' => 'required|integer|exists:items,id',
+			'auctionend_at' => 'required|string',
+		];
+		$customMessages = [];
+		$customAttributes = [];
+		$request
+			->validate($rules, $customMessages, $customAttributes);
+
+		return $this->itemServ
+			->openItem($request);
+	}
+
 }

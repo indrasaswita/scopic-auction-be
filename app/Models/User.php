@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
-    protected $fillable = ['userkey', 'name', 'password', 'maxbidamount', 'gender', 'created_at', 'updated_at'];
+    protected $fillable = ['userkey', 'name', 'password', 'maxbidamount', 'gender', 'fund', 'created_at', 'updated_at'];
     protected $guarded = ['id'];
     protected $dates = ['created_at', 'updated_at'];
     protected $hidden = ['password'];

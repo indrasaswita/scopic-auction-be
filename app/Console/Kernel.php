@@ -24,7 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        //Reminder for smallgroup request
+        $schedule->command('item:auctionexpire')
+        ->appendOutputTo(env('SERVER_PUBLIC_PATH').'/cronlogs/scopic-auction.itemtosold.everyminute.log')
+        ->cron('* * * * *');
     }
 
     /**

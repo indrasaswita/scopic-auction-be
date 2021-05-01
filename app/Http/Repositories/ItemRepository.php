@@ -32,6 +32,14 @@ class ItemRepository {
 		return $items;
 	}
 
+	public function getItemByStatuses($statuses) {
+		$items = $this->item
+			->whereIn('status', $statuses)
+			->get();
+
+		return $items;
+	}
+
 	public function getItemcategoryAll() {
 		$itemcategories = $this->itemcategory
 			->all();
@@ -86,6 +94,7 @@ class ItemRepository {
 		$item = $this->item
 			->where('id', $data['item_id'])
 			->with([
+				'creator',
 				'itemcategory', 
 				'itemusers' => function ($q) {
 					// the latest transaction would be shown first
@@ -97,11 +106,35 @@ class ItemRepository {
 		return $item;
 	}
 
+	public function getLastBidder($item_id){
+		$lastbidder = $this
+			->itemuser
+			->where('item_id', $item_id)
+			->orderBy('id', 'DESC')
+			->first();
+
+		if($lastbidder == null)
+			return 0;
+
+		$user_id = $lastbidder->user_id;
+
+		return $user_id;
+	}
+
 	public function bidItem($data){
 		$item = $this->item->find($data['item_id']);
 		if($item == null) return [0, null]; // notfound
 		else if($item->endbidamount >= $data['bidamount'])
 			return [1, $item->endbidamount]; // more than equal than latest
+
+		if($item->created_by == $data['user_id']) {
+			return [5, null]; // prevent if there is any direct api
+		}
+
+		$lastbidder = $this->getLastBidder($data['item_id']);
+		if($lastbidder == $data['user_id']) {
+			return [4, null];
+		}
 
 		try{
 			$result = $this->itemuser
@@ -118,6 +151,27 @@ class ItemRepository {
 		}
 
 		return [3, $result]; // success
+	}
+
+	public function itemSetActive($data){
+		$result = $this->item
+			->where('id', $data['item_id'])
+			->update([
+				'auctionend_at' => $data['auctionend_at'],
+				'status' => 'Active',
+			]);
+
+		return $result;
+	}
+
+	public function itemSetSold($data){
+		$result = $this->item
+			->where('id', $data['item_id'])
+			->update([
+				'status' => 'Sold',
+			]);
+
+		return $result;
 	}
 
 }
